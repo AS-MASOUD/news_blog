@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<div class="container align-center col-md-4 mt-5">
+    <h1> Signup Form</h1>
+
+<form method="post">
+
+    {% csrf_token %}
+    {{ form.as_p }}
+
+  <!-- Submit button -->
+  <button  type="submit" class="btn btn-primary btn-block mb-4">Sign up</button>
+
+  <!-- Register buttons -->
+  <div class="text-center">
+    <p>You have an account? <a href="{% url 'login' %}">Login</a></p>
+
+  </div>
+</form>
+
+
+</div>
+
+{% endblock content %}
+
