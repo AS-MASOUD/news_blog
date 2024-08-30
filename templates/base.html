@@ -51,8 +51,9 @@
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="{% url 'home' %}" class="active">Home</a></li>
-          <li><a href="#!">Blog</a></li>
+          <li><a href="{% url 'blogs' %}">Blog</a></li>
           {% if user.is_authenticated %}
+            <li><a href="{% url 'post_new' %}">+ Add New Post</a></li>
             <li class="dropdown"><a href="#">{{ user.username }}<span><i class="bi bi-chevron-down"></i></span></a>
             <ul class="w-100">
                 <li><a href="{% url 'logout' %}">Logout</a></li>
