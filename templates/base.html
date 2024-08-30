@@ -53,10 +53,18 @@
           <li><a href="{% url 'home' %}" class="active">Home</a></li>
           <li><a href="#!">Blog</a></li>
           {% if user.is_authenticated %}
-            <li><a href="{% url 'logout' %}">Logout</a></li>
+            <li class="dropdown"><a href="#">{{ user.username }}<span><i class="bi bi-chevron-down"></i></span></a>
+            <ul class="w-100">
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            </ul>
+            </li>
           {% else %}
-            <li><a href="{% url 'login' %}">Login</a></li>
-            <li><a href="{% url 'signup' %}">SignUp</a></li>
+            <li class="dropdown"><a href="#">User<span><i class="bi bi-chevron-down"></i></span></a>
+            <ul>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">SignUp</a></li>
+            </ul>
+            </li>
           {% endif %}
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
