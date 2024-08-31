@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags%}
+
+{% block content %}
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title dark-background">
+      <div class="container position-relative">
+        <h1>Blogs</h1>
+        <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda numquam molestias.</p>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li class="current"><a href="{% url 'blogs' %}">Blogs</a></li>
+            <li class="current">Update Post "{{ post.title }}"</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-lg-8 my-5">
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form | crispy }}
+                <br>
+                <button class="btn btn-info text-light">Update Post</button>
+            </form>
+
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+{% endblock content %}
+
+
+
+

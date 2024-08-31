@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title dark-background">
+      <div class="container position-relative">
+        <h1>Blogs</h1>
+        <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda numquam molestias.</p>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li class="current"><a href="{% url 'blogs' %}">Blogs</a></li>
+            <li class="current">Delete Post "{{ post.title }}"</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <div class="container">
+      <div class="row">
+
+        <div class="col-lg-8 my-5">
+
+            <form method="post">
+                {% csrf_token %}
+                <p>Are you sure you want to delete? <strong>"{{ post.title }}"</strong></p>
+                <br>
+                <button class="btn btn-danger text-light">Delete Post</button>
+            </form>
+
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+{% endblock content %}
+
+
+
+
