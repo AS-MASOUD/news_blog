@@ -15,7 +15,7 @@ class BlogView(View):
     paginate_by = 9
 
     def get(self, request):
-        posts = Post.objects.all()
+        posts = Post.objects.all().order_by('-date')
         paginator = Paginator(posts, self.paginate_by)
 
         page_number = request.GET.get('page')

@@ -4,6 +4,10 @@ from .models import Post
 from .forms import PostForm, CommentForm
 from django.urls import reverse_lazy, reverse
 from django.views.generic.detail import SingleObjectMixin
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.decorators import login_required
+
 
 
 class PostNewView(CreateView):
@@ -69,3 +73,23 @@ class PostDeleteView(DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('blogs')
+
+
+@login_required
+def post_like(request, pk):
+    post = get_object_or_404(Post, id=pk)
+    is_liked = False
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+        is_liked = True
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({
+            'total_likes': post.likes_count(),
+            'is_liked': is_liked,
+            'post_id': pk
+        })
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
