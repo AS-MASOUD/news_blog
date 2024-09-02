@@ -24,6 +24,10 @@
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ form | crispy }}
+                        <div>
+                            <label for="{{ form.author.id_for_label }}">Author</label>
+                            <label> <strong> {{ request.user }} </strong></label>
+                        </div>
                         <br>
                         <input type="submit" value="Publish" class="btn btn-success">
                     </form>

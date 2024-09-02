@@ -40,7 +40,10 @@
 
                 <div class="meta-top">
                   <ul>
-                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> <a href="#!">{{ post.author }}</a></li>
+                    <li class="d-flex align-items-center">
+                        <i class="bi bi-person"></i>
+                        <a href="{% url 'user_profile' post.author.id %}">{{ post.author }}</a>
+                    </li>
                     <li class="d-flex align-items-center"><i class="bi bi-clock"></i><time datetime="2020-01-01">{{ post.date }}</time></li>
                     <li class="d-flex align-items-center">
                         <i class="bi bi-chat-dots"></i>
@@ -51,25 +54,25 @@
                         {% endif %}
                     </li>
                      <li class="d-flex align-items-center">
-                        <span class="comments-count" id="like-count-{{ post.id }}">{{ post.likes.count }}</span>
-                        <!-- Like button -->
+                        <span class="comments-count" id="like-count-{{ post.id }}">
+                            {{ post.likes.count }}
+                            <i class="bi bi-hand-thumbs-up-fill"></i>
+                        </span>
+                        <!-- Like section -->
                         <form action="{% url 'post_like' post.pk %}" method="post" class="like-form">
                             {% csrf_token %}
                             {% if user.is_authenticated %}
                                 {% if user in post.likes.all %}
                                     <button type="submit" class="btn btn-sm like-button px-0">
-                                        <i class="bi bi-hand-thumbs-down"></i>
                                         Unlike
                                     </button>
                                 {% else %}
                                     <button type="submit" class="btn btn-sm like-button px-0">
-                                        <i class="bi bi-hand-thumbs-up"></i>
                                         Like
                                     </button>
                                 {% endif %}
                             {% else %}
                                 <div class="d-flex align-items-center">
-                                    <i class="bi bi-hand-thumbs-up"></i>
                                     <a href="{% url 'login' %}">Log in to like this post.</a>
                                 </div>
                             {% endif %}
@@ -183,12 +186,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const likeCountElement = document.querySelector(`#like-count-${postId}`);
 
                 // Set the like count
-                likeCountElement.textContent = `${data.total_likes}`;
-
-                // Set the like count icon based on initial state
-                likeCountElement.innerHTML += data.is_liked
-                    ? '<i class="bi bi-hand-thumbs-down"></i>'
-                    : '<i class="bi bi-hand-thumbs-up"></i>';
+                likeCountElement.innerHTML = '';
+                likeCountElement.textContent = ` ${data.total_likes} `;
+                likeCountElement.innerHTML += '<i class="bi bi-hand-thumbs-up-fill"></i>';
 
                 likeButton.textContent = data.is_liked ? 'Unlike' : 'Like';
             })
@@ -215,12 +215,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const likeButton = this.querySelector('.like-button');
                 const likeCountElement = document.querySelector(`#like-count-${data.post_id}`);
 
-                likeCountElement.textContent = `${data.total_likes}`;
-                likeCountElement.innerHTML += data.is_liked
-                    ? '<i class="bi bi-hand-thumbs-down"></i>'
-                    : '<i class="bi bi-hand-thumbs-up"></i>';
+                likeCountElement.innerHTML = '';
+                likeCountElement.textContent = ` ${data.total_likes} `;
+                likeCountElement.innerHTML += '<i class="bi bi-hand-thumbs-up-fill"></i>';
 
-                likeButton.innerHTML = '';
                 likeButton.textContent = data.is_liked ? 'Unlike' : 'Like';
             })
             .catch(error => console.error('Error:', error));
@@ -228,46 +226,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
-
-
-
-  {% comment %}  <script>
-    document.querySelectorAll('.like-form').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            fetch(this.action, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': this.querySelector('[name=csrfmiddlewaretoken]').value,
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                const likeButton = this.querySelector('.like-button');
-
-            // Clear the existing content of the button
-            likeButton.innerHTML = '';
-
-            if (data.is_liked) {
-                // Add thumbs-down icon for "Unlike"
-                document.querySelector(`#like-count-${data.post_id}`).textContent = `${data.total_likes}`;
-                document.querySelector(`#like-count-${data.post_id}`).innerHTML += '<i class="bi bi-hand-thumbs-down"></i>';
-                likeButton.textContent = 'Unlike';
-                likeButton.classList.remove('btn-danger');
-                likeButton.classList.add('btn-outline-dark');
-            } else {
-                // Add thumbs-up icon for "Like"
-                document.querySelector(`#like-count-${data.post_id}`).textContent = `${data.total_likes}`;
-                document.querySelector(`#like-count-${data.post_id}`).innerHTML += '<i class="bi bi-hand-thumbs-up"></i>';
-                likeButton.textContent = 'Like';
-                likeButton.classList.remove('btn-outline-dark');
-                likeButton.classList.add('btn-danger');
-            }
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    });
-</script>{% endcomment %}
 
 {% endblock content %}

@@ -14,7 +14,6 @@ class Post(models.Model):
     photo = models.ImageField(upload_to='photo/%Y/%m/%d')
     likes = models.ManyToManyField(get_user_model(), related_name='liked_posts', blank=True)
 
-
     def __str__(self):
         return self.title
 
@@ -32,4 +31,4 @@ class Comment(models.Model):
     date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return  self.body
+        return self.body

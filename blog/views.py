@@ -5,9 +5,8 @@ from .forms import PostForm, CommentForm
 from django.urls import reverse_lazy, reverse
 from django.views.generic.detail import SingleObjectMixin
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
-
 
 
 class PostNewView(CreateView):
@@ -19,7 +18,9 @@ class PostNewView(CreateView):
         # Redirect to the detail page of the created post
         return reverse_lazy('post_detail', kwargs={'pk': self.object.pk})
 
-    # success_url = reverse_lazy('blog_detail')
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
 class CommentGet(DetailView):

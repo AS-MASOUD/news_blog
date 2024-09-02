@@ -1,7 +1,7 @@
 
 {% load static %}
 
-        <div class="col-lg-4 sidebar">
+        <div class="col-lg-4 sidebar mt-5">
 
           <div class="widgets-container">
 
@@ -9,8 +9,11 @@
             <div class="blog-author-widget widget-item">
 
               <div class="d-flex flex-column align-items-center">
+
                 <img src="{{ post.author.photo.url }}" class="rounded-circle flex-shrink-0 " alt="">
-                <h4>{{ post.author.username }}</h4>
+                  <a href="{% url 'user_profile' post.author.id %}">
+                      <h4>{{ post.author.username }}</h4>
+                  </a>
                 <div class="social-links">
                   <a href="https://x.com/#"><i class="bi bi-twitter-x"></i></a>
                   <a href="https://facebook.com/#"><i class="bi bi-facebook"></i></a>
