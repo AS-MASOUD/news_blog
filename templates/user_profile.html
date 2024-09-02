@@ -5,71 +5,101 @@
 
 {% block content %}
 
-  <main class="main">
-
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 mt-5">
-
-            <!-- Blog Posts Section -->
-            <section id="blog-posts" class="blog-posts section">
+    <main class="main">
 
         <div class="container">
-            <div class="row gy-4">
+            <div class="row">
+                <div class="col-lg-8 mt-5">
+
+                    <!-- Blog Posts Section -->
+                    <section id="blog-posts" class="blog-posts section">
+                        <div class="container">
+                            <h2 class="title">My Articles</h2>
+                            <div class="row gy-4">
+                                {% if post_list %}
+
+                                    {% for post in post_list %}
+                                        <div class="col-lg-6">
+                                            <article>
+
+                                                <div class="post-img">
+                                                    <img src="{{ post.photo.url }}" alt="" class="img-fluid">
+                                                </div>
+
+                                                <p class="post-category">Politics</p>
+
+                                                <h2 class="title">
+                                                    <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+                                                </h2>
+
+                                                <div class="d-flex align-items-center">
+                                                    <img src="{{ post.author.photo.url }}" alt="" class="img-fluid post-author-img flex-shrink-0">
+                                                    <div class="post-meta">
+                                                        <p class="post-author">{{ post.author }}</p>
+                                                        <p class="post-date">
+                                                            <time datetime="2022-01-01">{{ post.date }}</time>
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                            </article>
+                                        </div><!-- End post list item -->
+                                    {% endfor %}
+                                {% else %}
+                                    <h2 class="my-2">You haven't published any post yet</h2>
+                                {% endif %}
+
+                            </div>
+                        </div>
+
+                    </section><!-- /Blog Posts Section -->
+
+                </div>
+
                 {% if post_list %}
+                    {% with post=post_list.0 %}
 
-                    {% for post in post_list %}
-                        <div class="col-lg-6">
-                            <article>
+                        <div class="col-lg-4 sidebar mt-5">
 
-                              <div class="post-img">
-                                <img src="{{ post.photo.url }}" alt="" class="img-fluid">
-                              </div>
+                            <div class="widgets-container">
 
-                              <p class="post-category">Politics</p>
+                                <!-- Blog Author Widget -->
+                                <div class="blog-author-widget widget-item">
 
-                              <h2 class="title">
-                                <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
-                              </h2>
+                                    <div class="d-flex flex-column align-items-center">
 
-                              <div class="d-flex align-items-center">
-                                <img src="{{ post.author.photo.url }}" alt="" class="img-fluid post-author-img flex-shrink-0">
-                                <div class="post-meta">
-                                  <p class="post-author">{{ post.author }}</p>
-                                  <p class="post-date">
-                                    <time datetime="2022-01-01">{{ post.date }}</time>
-                                  </p>
-                                </div>
-                              </div>
+                                        <img src="{{ post.author.photo.url }}" class="rounded-circle flex-shrink-0 " alt="">
+                                        <a href="{% url 'user_profile' post.author.id %}">
+                                            <h4>{{ post.author.username }}</h4>
+                                        </a>
+                                        <div class="social-links">
+                                            <a href="https://x.com/#"><i class="bi bi-twitter-x"></i></a>
+                                            <a href="https://facebook.com/#"><i class="bi bi-facebook"></i></a>
+                                            <a href="https://instagram.com/#"><i class="biu bi-instagram"></i></a>
+                                            <a href="https://instagram.com/#"><i class="biu bi-linkedin"></i></a>
+                                        </div>
 
-                            </article>
-                      </div><!-- End post list item -->
-                    {% endfor %}
+                                        <h3 class="title">About me</h3>
+                                        <p>{{ post.author.about }}</p>
+
+                                    </div>
+                                </div><!--/Blog Author Widget -->
+
+                            </div>
+
+                        </div>
+
+                    {% endwith %}
                 {% else %}
-                    <h2 class="my-2">You haven't published any post yet</h2>
+                    <!-- Handle the case where post_list is empty -->
+                    <p>No posts available.</p>
                 {% endif %}
 
-        </div>
-      </div>
-
-    </section><!-- /Blog Posts Section -->
-
+            </div>
         </div>
 
-          {% if post_list %}
-              {% with post=post_list.0 %}
-                  {% include 'sidebar.html' %}
-              {% endwith %}
-          {% else %}
-              <!-- Handle the case where post_list is empty if necessary -->
-              <p>No posts available.</p>
-          {% endif %}
+        {% include 'pagination.html' %}
 
-      </div>
-    </div>
-
-  {% include 'pagination.html' %}
-
-  </main>
+    </main>
 
 {% endblock content %}
